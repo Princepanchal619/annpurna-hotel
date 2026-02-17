@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>અન્નપૂર્ણા હોટેલ - મેગા ગુજરાતી મેનૂ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Vadodara:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #800000;
+            --gold: #D4AF37;
+            --orange: #FF8C00;
+            --cream: #FFF8DC;
+            --white: #ffffff;
+            --green: #2e7d32;
+            --dark: #1a1a1a;
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Hind Vadodara', sans-serif;
+            margin: 0;
+            background-color: var(--cream);
+            color: #333;
+        }
+
+        /* નેવિગેશન બાર */
+        nav {
+            background-color: var(--maroon);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 4px solid var(--gold);
+        }
+
+        .logo { color: var(--gold); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
+        .nav-links a { color: white; text-decoration: none; margin-left: 20px; cursor: pointer; font-weight: 500; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* હેડર સેક્શન */
+        .hero {
+            height: 40vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1500');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--gold);
+            text-align: center;
+        }
+
+        /* ફિલ્ટર બાર (3rd Code Style) */
+        .filter-container {
+            text-align: center;
+            padding: 20px;
+            background: var(--white);
+            position: sticky;
+            top: 70px;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            margin: 5px;
+            border: 2px solid var(--maroon);
+            background: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--maroon);
+        }
+
+        .filter-btn.active { background: var(--maroon); color: white; }
+
+        /* મેનૂ ગ્રીડ */
+        .page { padding: 40px 5%; max-width: 1400px; margin: auto; }
+        
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .food-card img { width: 100%; height: 190px; object-fit: cover; }
+
+        .food-info { padding: 15px; text-align: center; flex-grow: 1; }
+        .food-info h3 { margin: 10px 0; color: var(--maroon); font-size: 1.25rem; }
+        .food-info p { font-size: 0.9rem; color: #666; height: 45px; overflow: hidden; }
+
+        .price { font-size: 1.3rem; font-weight: bold; color: var(--green); margin: 10px 0; }
+
+        .add-btn {
+            background: var(--orange);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .add-btn:hover { background: var(--maroon); }
+
+        /* ફ્લોટિંગ કાર્ટ સમરી */
+        .cart-summary {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--maroon);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 1001;
+            font-weight: bold;
+        }
+
+        /* ઓર્ડર મોડલ */
+        #cart-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 100px rgba(0,0,0,0.5);
+            z-index: 2000;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1999;
+        }
+
+        /* ફૂટર સેક્શન */
+        footer {
+            background: var(--dark);
+            color: #ccc;
+            padding: 60px 5% 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        .footer-section h3 { color: var(--gold); margin-bottom: 20px; }
+        .footer-section p, .footer-section li { margin-bottom: 10px; font-size: 0.95rem; }
+        .footer-section ul { list-style: none; padding: 0; }
+        .footer-section a { color: #ccc; text-decoration: none; }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid #333;
+            margin-top: 40px;
+            padding-top: 20px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#" class="logo">🥘 અન્નપૂર્ણા હોટેલ</a>
+    <div class="nav-links">
+        <a onclick="location.reload()" href="index.html">મુખ્ય પૃષ્ઠ</a>
+        <a href="menu.html">મેનૂ</a>
+	<a onclick="toggleRoomBooking()" href="roombook.html">રૂમ બુક કરો</a>
+	<a href="orderhistory.html">ઓર્ડર ઇતિહાસ</a>
+    </div>
+</nav>
+
+<section class="page" id="rooms">
+    <h2 style="text-align:center;color:var(--maroon);margin-bottom:30px;">
+        🏨 અમારી રૂમ સુવિધાઓ
+    </h2>
+
+    <div class="menu-grid">
+        <div class="food-card">
+            <img src="standard.jpg">
+            <div class="food-info">
+                <h3>સ્ટાન્ડર્ડ રૂમ</h3>
+                <p>AC, Free Wi-Fi, TV, Attached Bathroom</p>
+                <div class="price">₹ 1500 / રાત</div>
+            </div>
+            <button class="add-btn" onclick="openRoom('સ્ટાન્ડર્ડ રૂમ',1500)">બુક કરો</button>
+        </div>
+
+        <div class="food-card">
+            <img src="delux-suite.webp">
+            <div class="food-info">
+                <h3>ડિલક્સ રૂમ</h3>
+                <p>AC, Balcony, Breakfast Included</p>
+                <div class="price">₹ 2500 / રાત</div>
+            </div>
+            <button class="add-btn" onclick="openRoom('ડિલક્સ રૂમ',2500)">બુક કરો</button>
+        </div>
+
+        <div class="food-card">
+            <img src="family-suite.webp">
+            <div class="food-info">
+                <h3>ફેમિલી સ્યુટ</h3>
+                <p>Large Room, Sofa, Mini-Fridge, Best for Family</p>
+                <div class="price">₹ 3500 / રાત</div>
+            </div>
+            <button class="add-btn" onclick="openRoom('ફેમિલી સ્યુટ',3500)">બુક કરો</button>
+        </div>
+    </div>
+</section>
+
+<div class="overlay" id="roomOverlay" onclick="toggleRoomBooking()"></div>
+
+<div id="room-modal" style="
+display:none;
+position:fixed;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+background:white;
+padding:30px;
+border-radius:20px;
+width:90%;
+max-width:450px;
+z-index:3000;
+">
+
+<h2 style="color:var(--maroon)">🏨 રૂમ બુકિંગ</h2>
+
+<label>રૂમ પ્રકાર</label>
+<input id="roomType" readonly style="width:100%;padding:10px;margin:5px 0">
+
+<label>ચેક-ઇન તારીખ</label>
+<input type="date" style="width:100%;padding:10px;margin:5px 0">
+
+<label>ચેક-આઉટ તારીખ</label>
+<input type="date" style="width:100%;padding:10px;margin:5px 0">
+
+<label>મહેમાનો</label>
+<select style="width:100%;padding:10px;margin:5px 0">
+    <option>1</option><option>2</option><option>3</option><option>4</option>
+</select>
+
+<h3>ભાવ: ₹ <span id="roomPrice"></span> / રાત</h3>
+
+<button class="add-btn" onclick="confirmRoom()">રૂમ કન્ફર્મ કરો</button>
+</div>
+
+<p style="margin-top:15px;text-align:center;font-weight:bold;color:var(--maroon);">
+📞 રૂમ બુક કરવા માટે કોલ કરો <br>
+<a href="tel:+918788254359" style="
+    color:var(--green);
+    font-size:1.3rem;
+    text-decoration:none;
+">
++૯૧ ૮૭૮૮૨૫૪૩૫૯
+</a>
+</p>
+
+
+
+<script>
+let selectedRoom = {};
+
+function openRoom(name, price){
+    selectedRoom = {name, price};
+    document.getElementById("roomType").value = name;
+    document.getElementById("roomPrice").innerText = price;
+    toggleRoomBooking();
+}
+
+function toggleRoomBooking(){
+    const modal = document.getElementById("room-modal");
+    const overlay = document.getElementById("roomOverlay");
+    const show = modal.style.display === "block";
+    modal.style.display = show ? "none" : "block";
+    overlay.style.display = show ? "none" : "block";
+}
+
+function confirmRoom(){
+    alert("🎉 " + selectedRoom.name + " સફળતાપૂર્વક બુક થઈ ગયો છે!");
+    toggleRoomBooking();
+}
+</script>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>અન્નપૂર્ણા હોટેલ</h3>
+            <p>અમે ૨૫ વર્ષથી રાજકોટમાં અસલી ગુજરાતી સ્વાદ પીરસીએ છીએ. શુદ્ધતા એ જ અમારી ઓળખ છે.</p>
+        </div>
+        <div class="footer-section">
+            <h3>ઝડપી લિંક્સ</h3>
+            <ul>
+                <li>• મુખ્ય પૃષ્ઠ</li>
+                <li>• મેનૂ લિસ્ટ</li>
+                <li>• અમારા વિશે</li>
+                <li>• સંપર્ક કરો</li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>સંપર્ક વિગત</h3>
+            <p>📍 શાસ્ત્રીનગર વિસ્તાર,
+અમદાવાદ – ૩૮૦૦૧૫, ગુજરાત.</p>
+            <p>📞 +૯૧ ૮૭૮૮૨૫૪૩૫૯</p>
+            <p>⏰ સવારે ૧૧ થી રાત્રે ૧૧</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© ૨૦૨૬ અન્નપૂર્ણા હોટેલ - અમદાવાદ | ડિઝાઇન: પાર્થ  પી. પંચાલ</p>
+    </div>
+</footer>
+
